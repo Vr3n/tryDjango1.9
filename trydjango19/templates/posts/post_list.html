@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block bodyBlock %}
+
+
+{% for obj in object_list %}
+    <h1> <a href= {% comment %} {% url 'post-detail' id=obj.id %} {% endcomment %} {{ obj.get_absolute_url }} >{{ obj.id }} - {{ obj.title }}</a></h1>
+{% endfor %}
+
+{% endblock bodyBlock %}
