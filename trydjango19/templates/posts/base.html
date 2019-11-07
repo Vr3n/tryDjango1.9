@@ -4,17 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CDN -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <!-- Local CSS -->
+    {% load staticfiles %}
+    <link rel="stylesheet" href=" {% static "css/base.css" %} ">
+
     <title>
         {% if  title  %}
             Blog - {{ title }}
-        {% else %}
+        {% else %} 
             Blog
         {% endif %}
     </title>
 </head>
 <body>
-    {% block bodyBlock %}
-    {% endblock bodyBlock %}
     
+    {% include "messages_display.html" %}
+    
+    <div class="container">
+        {% block bodyBlock %}
+        {% endblock bodyBlock %}
+    </div>
+
+<!-- Boostrap JS -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>

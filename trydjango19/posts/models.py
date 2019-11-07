@@ -20,3 +20,6 @@ class Post(models.Model):
             "id": self.id
         })
         # return f"/posts/{self.id}/"
+
+    class Meta:
+        ordering = ["-timestamp", "-updated"]

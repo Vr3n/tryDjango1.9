@@ -4,7 +4,12 @@
 
 
 {% for obj in object_list %}
-    <h1> <a href= {% comment %} {% url 'post-detail' id=obj.id %} {% endcomment %} {{ obj.get_absolute_url }} >{{ obj.id }} - {{ obj.title }}</a></h1>
+    <div class="col-sm-6">
+        <h1> <a href= {% comment %} {% url 'post-detail' id=obj.id %} {% endcomment %} {{ obj.get_absolute_url }} >{{ obj.id }} - {{    obj.title }}</a></h1>
+        <p>{{ obj.content|linebreaks|truncatechars:120 }}</p></br>
+        <p>{{ obj.timestamp }}</p></br>
+        <p>{{ obj.updated }}</p></br>
+    </div>
 {% endfor %}
 
 {% endblock bodyBlock %}

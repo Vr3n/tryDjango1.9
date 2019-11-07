@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Post
 from .forms import PostForm
@@ -8,7 +10,9 @@ from .forms import PostForm
 
 
 def posts_home(request):
+    queryset = Post.objects.all()
     context = {
+        "object_list": queryset,
         "title": "Home"
     }
     return render(request, "index.html", context)
@@ -20,6 +24,7 @@ def post_create(request):
         instance = form.save(commit=False)
         print(form.cleaned_data.get('title'))
         instance.save()
+        messages.success(request, "Post successfully Created.")
         return HttpResponseRedirect(instance.get_absolute_url())
     # if request.method == "POST":
     #     # Can be done like this
@@ -50,12 +55,11 @@ def post_list(request):
     #         "title": "My user List"
     #     }
     # else:
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-timestamp')
     context = {
         "object_list": queryset,
-        "title": "list"
     }
-    return render(request, "post_list.html", context)
+    return render(request, "index.html", context)
 
 
 def post_update(request, id=None):
@@ -66,6 +70,7 @@ def post_update(request, id=None):
         instance = form.save(commit=False)
         print(form.cleaned_data.get('title'))
         instance.save()
+        messages.success(request, "Post successfully Updated.")
         return HttpResponseRedirect(instance.get_absolute_url())
 
     context = {
@@ -77,5 +82,12 @@ def post_update(request, id=None):
     return render(request, "post_update_form.html", context)
 
 
-def post_delete(request):
-    return HttpResponse("<h1>Delete</h1>")
+def post_delete(request, id=None):
+    instance = get_object_or_404(Post, id=id)
+
+    form = PostForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.delete()
+        messages.success(request, "Post successfully deleted.")
+        return redirect('posts:post-list')
