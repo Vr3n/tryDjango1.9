@@ -10,16 +10,31 @@ from .forms import PostForm
 
 
 def posts_home(request):
-    queryset = Post.objects.all()
+    queryset_list = Post.objects.all()
+
+    # Pagination
+    paginator = Paginator(queryset_list, 2)
+    page_request_var = "posts"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an Integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
     context = {
         "object_list": queryset,
+        "page_request_var": page_request_var,
         "title": "Home"
     }
     return render(request, "index.html", context)
 
 
 def post_create(request):
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         print(form.cleaned_data.get('title'))
@@ -50,26 +65,36 @@ def post_detail(request, id=None):
 
 
 def post_list(request):
-    # if request.user.is_authenticated():
-    #     context = {
-    #         "title": "My user List"
-    #     }
-    # else:
     queryset = Post.objects.all().order_by('-timestamp')
+
+    # Pagination
+    paginator = Paginator(queryset, 5)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an Integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+
     context = {
         "object_list": queryset,
     }
-    return render(request, "index.html", context)
+
+    return render(request, "post_list.html", context)
 
 
 def post_update(request, id=None):
     instance = get_object_or_404(Post, id=id)
 
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None,
+                    request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
-        print(form.cleaned_data.get('title'))
         instance.save()
+        print(form.cleaned_data.get('title'))
         messages.success(request, "Post successfully Updated.")
         return HttpResponseRedirect(instance.get_absolute_url())
 
