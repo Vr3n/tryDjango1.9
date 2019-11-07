@@ -20,5 +20,5 @@ import posts.urls as post_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(post_urls))
+    url(r'^posts/', include(post_urls))
 ]

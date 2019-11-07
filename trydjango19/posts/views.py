@@ -5,11 +5,17 @@ from django.http import HttpResponse
 
 
 def posts_home(request):
-    return HttpResponse("<h1>Hello World!!</h1>")
+    context = {
+        "title": "Home"
+    }
+    return render(request, "index.html", context)
 
 
 def post_create(request):
-    return HttpResponse("<h1>Create Post!!</h1>")
+    context = {
+        "title": "Create Post"
+    }
+    return render(request, "create.html", context)
 
 
 def post_detail(request):
@@ -17,7 +23,15 @@ def post_detail(request):
 
 
 def post_list(request):
-    return HttpResponse("<h1>List</h1>")
+    # if request.user.is_authenticated():
+    #     context = {
+    #         "title": "My user List"
+    #     }
+    # else:
+    context = {
+        "title": "List"
+    }
+    return render(request, "list.html", context)
 
 
 def post_update(request):
