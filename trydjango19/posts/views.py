@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 from .models import Post
 from .forms import PostForm
 
@@ -53,9 +54,9 @@ def post_create(request):
     return render(request, "post_form.html", context)
 
 
-def post_detail(request, id=None):
-    # instance = Post.objects.get(id=1)
-    instance = get_object_or_404(Post, id=id)
+def post_detail(request, slug=None):
+    # instance = Post.objects.get(slug=1)
+    instance = get_object_or_404(Post, slug=slug)
     context = {
         "instance": instance,
         "title": "Detail",

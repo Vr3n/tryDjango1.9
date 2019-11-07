@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.text import slugify
 from django.core.urlresolvers import reverse
+from django.db.models.signals import pre_save
 
 # Create your models here.
 
@@ -14,7 +16,7 @@ def upload_location(instance, filename):
 
 class Post(models.Model):
     title = models.CharField(max_length=120)
-
+    slug = models.SlugField(unique=True)
     image = models.ImageField(
         upload_to=upload_location, null=True, blank=True, height_field="height_field", width_field="width_field")
     height_field = models.IntegerField(default=0)
@@ -29,9 +31,29 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('posts:post-detail', kwargs={
-            "id": self.id
+            "slug": self.slug
         })
         # return f"/posts/{self.id}/"
 
     class Meta:
         ordering = ["-timestamp", "-updated"]
+
+
+def create_slug(instance, new_slug=None):
+    slug = slugify(instance.title)
+    if new_slug is not None:
+        slug = new_slug
+    qs = Post.objects.filter(slug=slug).order_by('-id')
+    exists = qs.exists()
+    if exists:
+        new_slug = f"{slug}-{qs.first().id}"
+        return create_slug(instance, new_slug=new_slug)
+    return slug
+
+
+def pre_save_post_signal_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+
+
+pre_save.connect(pre_save_post_signal_receiver, sender=Post)
