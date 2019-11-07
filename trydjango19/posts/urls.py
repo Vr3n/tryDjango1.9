@@ -1,0 +1,18 @@
+from django.conf.urls import url
+from .views import (posts_home,
+                    post_create,
+                    post_delete,
+                    post_detail,
+                    post_list,
+                    post_update
+                    )
+
+# Write your URL patterns here.
+urlpatterns = [
+    url(r'^$',  posts_home, name="home"),
+    url(r'^create', post_create, name="post-create"),
+    url(r'^delete', post_delete, name="post-delete"),
+    url(r'^detail', post_detail, name="post-detail"),
+    url(r'^list', post_list, name="post-list"),
+    url(r'^update', post_update, name="post-update"),
+]
