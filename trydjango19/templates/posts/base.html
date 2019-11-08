@@ -70,11 +70,8 @@
 <!-- Local JS -->
 <script>
 $(document).ready(function() {
-  $(".content-markdown").each(function() {
-    var content = $(".content-markdown").text();
-    console.log(content);
-    var markedContent = marked(content);
-    $(this).html(markedContent)
+  $(".post-detail-item img").each(function() {
+    $(this).addClass("img-responsive");
   });
 });
 
