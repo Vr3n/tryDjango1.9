@@ -14,8 +14,21 @@
     </small> {% endif %} <small>{{ instance.timestamp }}</small> </h1>
     <p>Author: {{ instance.user }}</p>
     </br>
-    <p>{{ instance.content| linebreaks  }}</p>
-    <hr>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="content-markdown">
+                <p>{{ instance.content|linebreaks }}</p>
+            </div>
+            <hr>
+            <br>
+            <!-- Facebook Like and Share button --> 
+            <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+
+            <!-- Facebook Comments -->
+            <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="100%" data-numposts="5"></div>
+        </div>
+    </div>
 
     <!-- Social Links Sharing. -->
 
@@ -44,13 +57,6 @@
         <!-- Pinterest -->
         <a data-pin-do="buttonBookmark" href="{{ request.build_absolute_uri }}"><img src="{{ obj.image.url }}" /></a>
     </p> {% endcomment %}
-
-    <!-- Facebook Like and Share button --> 
-    <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
-
-    <!-- Facebook Comments -->
-    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="100%" data-numposts="5"></div>
-
 </div>
 
 {% endblock bodyBlock %}

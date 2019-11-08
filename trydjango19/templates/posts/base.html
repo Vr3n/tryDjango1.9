@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
     <!-- Local CSS -->
-    {% load staticfiles %}
+    
     <link rel="stylesheet" href=" {% static "css/base.css" %} ">
 
     <title>
@@ -52,8 +53,30 @@
     </div>
 
 
+<!-- JQuery CDN -->
+<script
+  src="https://code.jquery.com/jquery-1.12.2.min.js"
+  integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk="
+  crossorigin="anonymous"></script>
+
 <!-- Boostrap JS -->
-<!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Markdown JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js"></script>
+
+<!-- Local JS -->
+<script>
+$(document).ready(function() {
+  $(".content-markdown").each(function() {
+    var content = $(".content-markdown").text();
+    console.log(content);
+    var markedContent = marked(content);
+    $(this).html(markedContent)
+  });
+});
+
+</script>
+
 </body>
 </html>
