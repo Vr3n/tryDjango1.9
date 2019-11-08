@@ -29,11 +29,23 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v5.0"></script>
 
+    <!-- Facebook Like and Share btn Plugin -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v5.0"></script>
+
     <!-- Pinterest Social handle -->
     <script async defer src="https://assets.pinterest.com/js/pinit.js"></script>
 
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="{% url 'posts:home' %}" class="btn btn-success navbar-btn">Home</a>
+                <a href="{% url 'posts:post-create' %}" class="btn btn-primary navbar-btn">Create Post</a>
+            </div>
+        </div>
+    </nav>
     {% include "messages_display.html" %}
-    
+
     <div class="container">
         {% block bodyBlock %}
         {% endblock bodyBlock %}

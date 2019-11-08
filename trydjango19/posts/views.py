@@ -1,8 +1,9 @@
 from django.contrib import messages
+from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from urllib.parse import quote_plus
 
 from .models import Post
 from .forms import PostForm
@@ -11,7 +12,11 @@ from .forms import PostForm
 
 
 def posts_home(request):
-    queryset_list = Post.objects.all()
+    today = timezone.now().date()
+    queryset_list = Post.objects.active()
+
+    if request.user.is_staff or request.user.is_superuser:
+        queryset_list = Post.objects.all()
 
     # Pagination
     paginator = Paginator(queryset_list, 2)
@@ -29,14 +34,13 @@ def posts_home(request):
     context = {
         "object_list": queryset,
         "page_request_var": page_request_var,
-        "title": "Home"
+        "title": "Home",
+        "today": today
     }
     return render(request, "index.html", context)
 
 
 def post_create(request):
-    if not request.user.is_authenticated():
-        raise Http404
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -60,19 +64,26 @@ def post_create(request):
 def post_detail(request, slug=None):
     # instance = Post.objects.get(slug=1)
     instance = get_object_or_404(Post, slug=slug)
+
+    if instance.draft or instance.publish > timezone.now().date():
+        if not request.user.is_staff or not request.user.is_superuser:
+            raise Http404
+
+    share_string = quote_plus(instance.content)
     context = {
         "instance": instance,
         "title": "Detail",
+        "share_string": share_string,
     }
 
     return render(request, "post_detail.html", context)
 
 
 def post_list(request):
-    queryset = Post.objects.all().order_by('-timestamp')
+    queryset_list = Post.objects.active()
 
     # Pagination
-    paginator = Paginator(queryset, 5)
+    paginator = Paginator(queryset_list, 5)
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
@@ -84,7 +95,7 @@ def post_list(request):
         posts = paginator.page(paginator.num_pages)
 
     context = {
-        "object_list": queryset,
+        "object_list": queryset_list,
     }
 
     return render(request, "post_list.html", context)

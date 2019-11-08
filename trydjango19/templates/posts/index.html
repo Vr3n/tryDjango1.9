@@ -5,8 +5,6 @@
 
 <h2>Here are some Blogs!! Feel free to check them out.</h2>
 
-<p><a href="{% url 'posts:post-create' %}" class="btn btn-success" role="button">Create</a>
-
 {% comment %} <h4><a href={% url 'posts:post-list' %}>Blogs</a></h4> {% endcomment %}
 <div class="col-sm-8 col-sm-offset">
     <div class="row">
@@ -17,6 +15,7 @@
                         <img src="{{ obj.image.url }}" class='img-responsive'>
                     {% endif %}
                 <div class="caption">
+                    {% if obj.draft %} <h3>Draft {% if obj.publish > today %} Future Post {% endif %} </h3> {% endif %}
                     <h3><a href= "{{ obj.get_absolute_url }}" >{{ obj.id }} - {{    obj.title }}</a>
                         <small>{{ obj.timestamp | timesince }}</small>
                     </h3>
