@@ -8,8 +8,9 @@
         <img src="{{ instance.image.url }}" class='img-responsive'>
     {% endif %}
     <h1>{{ instance.title }} <small>{{ instance.timestamp }}</small> </h1>
+    <p>Author: {{ instance.user }}</p>
     </br>
-    <p>{{ instance.content| linebreaks }}</p>
+    <p>{{ instance.content| linebreaks  }}</p>
 </div>
 
 {% endblock bodyBlock %}

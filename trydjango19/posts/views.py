@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -35,9 +35,12 @@ def posts_home(request):
 
 
 def post_create(request):
+    if not request.user.is_authenticated():
+        raise Http404
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.user = request.user
         print(form.cleaned_data.get('title'))
         instance.save()
         messages.success(request, "Post successfully Created.")
