@@ -1,9 +1,10 @@
-from django.contrib import messages
+from django.db.models import Q
 from django.utils import timezone
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404, Http404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote_plus
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 
 from .models import Post
 from .forms import PostForm
@@ -17,6 +18,16 @@ def posts_home(request):
 
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
+
+    # Search Query.
+    query = request.GET.get('q')
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(user__last_name__icontains=query)
+        ).distinct()
 
     # Pagination
     paginator = Paginator(queryset_list, 2)

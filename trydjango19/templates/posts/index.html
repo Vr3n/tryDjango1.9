@@ -3,10 +3,13 @@
 {% block bodyBlock %}
 <h1>Welcome to Blogging App</h1>
 
-<h2>Here are some Blogs!! Feel free to check them out.</h2>
-
 {% comment %} <h4><a href={% url 'posts:post-list' %}>Blogs</a></h4> {% endcomment %}
 <div class="col-sm-8 col-sm-offset">
+    <form action="" method="get">
+        <input type="text" name='q' placeholder='Search Posts' value="{{ request.GET.q }}" >
+        <input type="submit" value="Search">
+    </form>
+    <br>
     <div class="row">
         {% for obj in object_list %}
             <div class="col-sm-12">
@@ -40,7 +43,7 @@
             </span>
 
             {% if object_list.has_next %}
-                <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
             {% endif %}
         </span>
     </div>
