@@ -22,7 +22,7 @@
                     <h3><a href= "{{ obj.get_absolute_url }}" >{{ obj.id }} - {{    obj.title }}</a>
                         <small>{{ obj.timestamp | timesince }}</small>
                     </h3>
-                    <p>{{ obj.content|linebreaks|truncatechars:120 }}</p>
+                    <p class='content-markdown'>{{ obj.content|truncatechars:120 }}</p>
                     <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a>
                     <p><a href="{% url 'posts:post-update' obj.id %}" class="btn btn-primary" role="button">Edit</a>
                     <p><a href="{% url 'posts:post-delete' obj.id %}" class="btn btn-danger" role="button">Delete</a>
