@@ -7,16 +7,24 @@
 {% endblock head_extra %}
 
 {% block bodyBlock %}
-<div class="col-sm-6 col-sm-offset-3">
 
-<h1>Create an New Post</h1>
+<div class="col-sm-6">
+    <h1>Preview</h1>
+    <div class="content-preview">
+        <h3 id="preview-title"></h3>
+        <p id="preview-content"></p>
+    </div>
+</div>
 
-<form method="POST" enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="col-sm-6">
+    <h1>Create an New Post</h1>
 
-    <input type="submit" value="Create Post" class="btn btn-default">
-</form>
+    <form method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" value="Create Post" class="btn btn-default">
+    </form>
 </div>
 
 

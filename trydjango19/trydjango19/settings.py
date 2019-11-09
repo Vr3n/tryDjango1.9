@@ -39,12 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third Party libraries.
+    'crispy_forms',
     'pagedown',
     'markdown_deux',
 
     # Local Apps.
     'posts'
 ]
+
+# CRISPY FORM SETTING.
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,6 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 
 

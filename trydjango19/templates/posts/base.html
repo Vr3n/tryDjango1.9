@@ -1,4 +1,3 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +12,11 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
+    <!-- Font Awesome CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <!-- Local CSS -->
-    
+    {% load staticfiles %}
     <link rel="stylesheet" href=" {% static "css/base.css" %} ">
 
     <title>
@@ -68,12 +70,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js"></script>
 
 <!-- Local JS -->
-<script>
+{% load static %}
+<script type='text/javascript'>
+
+
+// For image responsiveness.
 $(document).ready(function() {
   $(".post-detail-item img").each(function() {
     $(this).addClass("img-responsive");
   });
+
+    // For Post Preview.
+    var titleItem = $('#id_title')
+    $("#preview-title").text(marked(titleItem.val()))
+
+    function setTitle(value) {
+        $('#preview-title').text(value);
+    }
+
+    setTitle(titleItem.val())
+
+    titleInput.keyup(function() {
+        var newContent = $(this).val()
+        setTitle(newContent)
+    })
+
+
+    var contentInput = $('#id_content');
+    $("#preview-content").html(contentInput);
+
+    function setContent(value) {
+        var markedContent = marked(value);
+        $("#preview-content").html(markedContent);
+        $('#preview-content img').each(function() {
+            $(this).addClass('img-responsive');
+        });
+    };
+    setContent(contentInput.val())
+
+    contentInput.keyup(function() {
+        var newContent = $(this).val()
+        setContent(newContent)
+    })
+
+    
+
 });
+
+
 
 </script>
 

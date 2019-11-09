@@ -16,9 +16,9 @@
     </br>
 
     <div class="row">
-        <div class="col-sm-12 post-detail-item">
+        <div class="col-sm-12 post-detail-item content-markdown">
             <div>
-                <p class=''>{{ instance.get_markdown }}</p>
+                <p>{{ instance.get_markdown|truncatewords_html:10 }}</p>
             </div>
             <hr>
             <br>
