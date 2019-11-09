@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'markdown_deux',
 
     # Local Apps.
+    'comments',
     'posts'
 ]
 

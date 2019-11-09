@@ -7,8 +7,11 @@ from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 from django.db.models.signals import pre_save
+from django.contrib.contenttypes.models import ContentType
 
 from markdown_deux import markdown
+
+from comments.models import Comment
 
 # Create your models here.
 
@@ -55,6 +58,18 @@ class Post(models.Model):
     def get_markdown(self):
         content = self.content
         return mark_safe(markdown(content))
+
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 
 def create_slug(instance, new_slug=None):
