@@ -1,4 +1,4 @@
 autopep8==1.4.4
-Django==1.9
+Django==1.11.29
 Pillow==6.2.1
 pycodestyle==2.5.0
